@@ -3,58 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>宜慶地政 - 許願池</title>
+    <title>宜慶地政感恩餐會 - 許願池</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <style>
-        :root { --gold: #ffd700; --red: #ff4757; --dark: #0f0f0f; }
+        :root { --gold: #ffd700; --red: #ff4757; --dark: #121212; --blue: #3498db; }
         body { 
             background: var(--dark); color: white; font-family: "Microsoft JhengHei", sans-serif;
             margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden;
         }
-        .container { width: 100%; max-width: 500px; text-align: center; padding: 20px; }
-        
-        /* 卡片樣式 */
+        .container { width: 100%; max-width: 450px; text-align: center; padding: 20px; }
         .card { 
-            background: rgba(255, 255, 255, 0.05); border-radius: 30px; padding: 40px 20px;
-            border: 2px solid var(--gold); box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
-            position: relative; overflow: hidden;
+            background: rgba(255, 255, 255, 0.05); border-radius: 30px; padding: 40px 25px;
+            border: 2px solid var(--gold); box-shadow: 0 0 30px rgba(255, 215, 0, 0.15);
+            backdrop-filter: blur(10px); position: relative;
         }
-
-        /* 問題與吐槽切換 */
         .page { display: none; }
-        .active { display: block; animation: zoomIn 0.3s; }
+        .active { display: block; animation: fadeIn 0.4s ease-in-out; }
 
-        h2 { color: var(--gold); font-size: 1.5rem; margin-bottom: 30px; }
+        h1 { color: var(--gold); font-size: 2.2rem; margin-bottom: 10px; }
+        h2 { color: var(--gold); font-size: 1.4rem; margin-bottom: 25px; line-height: 1.5; }
+        p { line-height: 1.6; color: #ddd; }
+
+        .btn-main {
+            background: linear-gradient(45deg, #d4af37, #f1c40f);
+            color: black; border: none; padding: 18px 45px; font-size: 1.3rem;
+            font-weight: bold; border-radius: 50px; cursor: pointer; transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+        }
         .btn-opt { 
-            display: block; width: 100%; padding: 15px; margin: 10px 0;
-            background: rgba(255,255,255,0.1); border: 1px solid #555; color: white;
-            border-radius: 15px; font-size: 1.1rem; cursor: pointer; transition: 0.3s;
+            display: block; width: 100%; padding: 15px; margin: 12px 0;
+            background: rgba(255,255,255,0.08); border: 1px solid #444; color: white;
+            border-radius: 15px; font-size: 1.1rem; cursor: pointer; transition: 0.2s;
         }
         .btn-opt:hover { background: var(--gold); color: black; font-weight: bold; }
 
-        /* 吐槽頁面樣式 */
-        .joke-icon { font-size: 80px; margin-bottom: 20px; display: block; }
-        .joke-text { font-size: 2rem; font-weight: bold; color: var(--red); margin-bottom: 30px; }
+        /* 吐槽風格 */
+        .joke-icon { font-size: 100px; display: block; margin-bottom: 10px; }
+        .joke-text { font-size: 2.2rem; font-weight: bold; color: var(--red); margin-bottom: 25px; }
 
-        /* 最終許願池動畫 */
-        .fountain-area {
-            animation: floating 3s ease-in-out infinite;
-        }
-        @keyframes floating {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
+        /* 最終動畫 */
+        .fountain-anim { animation: floating 2.5s ease-in-out infinite; font-size: 70px; display: block; }
+        @keyframes floating { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
         .glow-btn {
-            background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%);
-            border: none; padding: 20px 40px; color: white; font-size: 1.5rem;
+            background: linear-gradient(45deg, #ff4757, #ff9f43);
+            border: none; padding: 20px 50px; color: white; font-size: 1.4rem;
             border-radius: 50px; cursor: pointer; font-weight: bold;
-            box-shadow: 0 0 30px rgba(245, 87, 108, 0.6);
-            transition: 0.3s;
+            box-shadow: 0 0 25px rgba(255, 71, 87, 0.5);
         }
-        .glow-btn:hover { transform: scale(1.1); box-shadow: 0 0 50px rgba(245, 87, 108, 1); }
 
-        @keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -62,72 +60,84 @@
 <div class="container">
     <div class="card">
         
-        <div id="q1" class="page active">
+        <div id="p0" class="page active">
+            <span style="font-size: 50px;">🧧</span>
+            <h1>宜慶地政</h1>
+            <h2>感恩餐會許願池</h2>
+            <p>感謝夥伴們一整年的努力！<br>我們特別準備了這個互動空間，<br>邀請您來許下今年的心願。</p>
+            <br>
+            <button class="btn-main" onclick="showPage('q1')">開始許願</button>
+        </div>
+
+        <div id="q1" class="page">
             <h2>Q1: 今年最想抽到哪款手機？</h2>
-            <button class="btn-opt" onclick="goJoke('joke1')">iPhone 17 Pro Max</button>
-            <button class="btn-opt" onclick="goJoke('joke1')">Samsung S26 Ultra</button>
+            <button class="btn-opt" onclick="showPage('joke1')">iPhone 17 Pro Max</button>
+            <button class="btn-opt" onclick="showPage('joke1')">Samsung S26 Ultra</button>
         </div>
         <div id="joke1" class="page">
             <span class="joke-icon">🙄</span>
-            <div class="joke-text animate__animated animate__headShake">想得美喔～</div>
-            <button class="btn-opt" onclick="nextPage('q2')">好吧...下一題</button>
+            <div class="joke-text animate__animated animate__shakeX">想得美喔～</div>
+            <button class="btn-opt" onclick="showPage('q2')">好吧...下一題</button>
         </div>
 
         <div id="q2" class="page">
             <h2>Q2: 犒賞辛苦的自己，想要...</h2>
-            <button class="btn-opt" onclick="goJoke('joke2')">愛馬仕 (Hermès)</button>
-            <button class="btn-opt" onclick="goJoke('joke2')">香奈兒 (Chanel)</button>
+            <button class="btn-opt" onclick="showPage('joke2')">愛馬仕 (Hermès)</button>
+            <button class="btn-opt" onclick="showPage('joke2')">香奈兒 (Chanel)</button>
         </div>
         <div id="joke2" class="page">
             <span class="joke-icon">😱</span>
-            <div class="joke-text animate__animated animate__headShake">不可能，別作夢！</div>
-            <button class="btn-opt" onclick="nextPage('q3')">我清醒了，下一題</button>
+            <div class="joke-text animate__animated animate__shakeX">不可能，別作夢！</div>
+            <button class="btn-opt" onclick="showPage('q3')">我清醒了，下一題</button>
         </div>
 
         <div id="q3" class="page">
             <h2>Q3: 如果宜慶發大財，你想要？</h2>
-            <button class="btn-opt" onclick="goJoke('joke3')">市中心透天別墅</button>
-            <button class="btn-opt" onclick="goJoke('joke3')">保時捷 911</button>
+            <button class="btn-opt" onclick="showPage('joke3')">市中心透天別墅</button>
+            <button class="btn-opt" onclick="showPage('joke3')">保時捷 911</button>
         </div>
         <div id="joke3" class="page">
             <span class="joke-icon">👻</span>
-            <div class="joke-text animate__animated animate__headShake">去睡覺比較快啦！</div>
-            <button class="btn-opt" onclick="nextPage('final')">看真正能抽的...</button>
+            <div class="joke-text animate__animated animate__shakeX">去睡覺比較快啦！</div>
+            <button class="btn-opt" onclick="showPage('final')">看真正能抽的...</button>
         </div>
 
         <div id="final" class="page">
-            <div class="fountain-area">
-                <span style="font-size: 60px;">✨⛲✨</span>
-                <h2 style="margin: 10px 0;">宜慶感恩許願池</h2>
-                <p style="opacity: 0.8; margin-bottom: 30px;">雖然夢想很遠，但大獎很近！<br>點擊進入真正的許願站</p>
-                <button class="glow-btn" onclick="finish()">立刻許願</button>
-            </div>
+            <span class="fountain-anim">⛲</span>
+            <h2 style="margin-top: 0;">宜慶感恩許願池</h2>
+            <p style="opacity: 0.8; margin-bottom: 30px;">好啦！開個小玩笑～<br>雖然前面的大夢很難，<br>但您的真心話我們一定聽！</p>
+            <button class="glow-btn" onclick="finish()">點我正式許願</button>
         </div>
 
     </div>
 </div>
 
 <script>
-    function goJoke(jokeId) {
+    function showPage(pageId) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById(jokeId).classList.add('active');
-    }
-
-    function nextPage(nextId) {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById(nextId).classList.add('active');
+        document.getElementById(pageId).classList.add('active');
     }
 
     function finish() {
-        confetti({
-            particleCount: 200,
-            spread: 90,
-            origin: { y: 0.6 },
-            colors: ['#ffd700', '#ff4757', '#ffffff']
-        });
+        // 撒花特效
+        var duration = 3 * 1000;
+        var animationEnd = Date.now() + duration;
+        var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+        function randomInRange(min, max) { return Math.random() * (max - min) + min; }
+
+        var interval = setInterval(function() {
+            var timeLeft = animationEnd - Date.now();
+            if (timeLeft <= 0) return clearInterval(interval);
+            var particleCount = 50 * (timeLeft / duration);
+            confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+            confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+        }, 250);
+
+        // 兩秒後跳轉
         setTimeout(() => {
             window.location.href = "https://forms.gle/JhEsZ4KktNeHyPjV9";
-        }, 1500);
+        }, 2000);
     }
 </script>
 
