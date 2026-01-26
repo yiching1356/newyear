@@ -7,64 +7,81 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <style>
-        :root { --gold: #ffd700; --red: #ff4757; --dark: #121212; --blue: #3498db; }
+        :root { 
+            --festive-red: #b31217; 
+            --gold-gradient: linear-gradient(45deg, #d4af37, #f1c40f, #d4af37);
+            --dark-red: #7d0a0a;
+            --white: #ffffff;
+        }
+        
         body { 
-            background: var(--dark); color: white; font-family: "Microsoft JhengHei", sans-serif;
+            background: radial-gradient(circle, var(--festive-red) 0%, var(--dark-red) 100%);
+            color: white; font-family: "Microsoft JhengHei", sans-serif;
             margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden;
         }
-        .container { width: 100%; max-width: 450px; text-align: center; padding: 20px; }
+
+        /* 裝飾性燈籠 */
+        .lantern { position: absolute; font-size: 40px; top: 20px; animation: swing 3s ease-in-out infinite; }
+        .lantern-l { left: 20px; }
+        .lantern-r { right: 20px; }
+        @keyframes swing { 0%, 100% { transform: rotate(-5deg); } 50% { transform: rotate(5deg); } }
+
+        .container { width: 100%; max-width: 450px; text-align: center; padding: 20px; z-index: 10; }
+        
         .card { 
-            background: rgba(255, 255, 255, 0.05); border-radius: 30px; padding: 40px 25px;
-            border: 2px solid var(--gold); box-shadow: 0 0 30px rgba(255, 215, 0, 0.15);
-            backdrop-filter: blur(10px); position: relative;
+            background: rgba(255, 255, 255, 0.95); border-radius: 20px; padding: 40px 25px;
+            border: 4px solid #d4af37; box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+            position: relative; color: #333;
         }
+
         .page { display: none; }
-        .active { display: block; animation: fadeIn 0.4s ease-in-out; }
+        .active { display: block; animation: fadeIn 0.5s ease-in-out; }
 
-        h1 { color: var(--gold); font-size: 2.2rem; margin-bottom: 10px; }
-        h2 { color: var(--gold); font-size: 1.4rem; margin-bottom: 25px; line-height: 1.5; }
-        p { line-height: 1.6; color: #ddd; }
+        h1 { color: var(--festive-red); font-size: 2.2rem; margin-bottom: 5px; }
+        h2 { color: #8a6d3b; font-size: 1.3rem; margin-bottom: 25px; border-bottom: 1px solid #ddd; padding-bottom: 15px; }
+        p { line-height: 1.6; color: #444; font-weight: bold; }
 
-        .btn-main {
-            background: linear-gradient(45deg, #d4af37, #f1c40f);
-            color: black; border: none; padding: 18px 45px; font-size: 1.3rem;
+        /* 金色按鈕樣式 */
+        .btn-main, .glow-btn {
+            background: var(--gold-gradient);
+            color: #5d4037; border: none; padding: 18px 45px; font-size: 1.3rem;
             font-weight: bold; border-radius: 50px; cursor: pointer; transition: 0.3s;
-            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
+        .btn-main:hover, .glow-btn:hover { transform: scale(1.05); filter: brightness(1.1); }
+
         .btn-opt { 
             display: block; width: 100%; padding: 15px; margin: 12px 0;
-            background: rgba(255,255,255,0.08); border: 1px solid #444; color: white;
-            border-radius: 15px; font-size: 1.1rem; cursor: pointer; transition: 0.2s;
+            background: #fff; border: 2px solid #d4af37; color: #d4af37;
+            border-radius: 12px; font-size: 1.1rem; cursor: pointer; transition: 0.2s; font-weight: bold;
         }
-        .btn-opt:hover { background: var(--gold); color: black; font-weight: bold; }
+        .btn-opt:hover { background: #fff5e6; border-color: var(--festive-red); color: var(--festive-red); }
 
-        /* 吐槽風格 */
-        .joke-icon { font-size: 100px; display: block; margin-bottom: 10px; }
-        .joke-text { font-size: 2.2rem; font-weight: bold; color: var(--red); margin-bottom: 25px; }
+        /* 吐槽樣式 */
+        .joke-icon { font-size: 80px; display: block; margin-bottom: 10px; }
+        .joke-text { font-size: 2rem; font-weight: bold; color: var(--festive-red); margin-bottom: 25px; }
 
-        /* 最終動畫 */
-        .fountain-anim { animation: floating 2.5s ease-in-out infinite; font-size: 70px; display: block; }
-        @keyframes floating { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
-        .glow-btn {
-            background: linear-gradient(45deg, #ff4757, #ff9f43);
-            border: none; padding: 20px 50px; color: white; font-size: 1.4rem;
-            border-radius: 50px; cursor: pointer; font-weight: bold;
-            box-shadow: 0 0 25px rgba(255, 71, 87, 0.5);
+        /* 下一題按鈕(小紅色) */
+        .btn-next {
+            background: var(--festive-red); color: white; border: none;
+            padding: 10px 25px; border-radius: 5px; cursor: pointer;
         }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
     </style>
 </head>
 <body>
+
+<div class="lantern lantern-l">🏮</div>
+<div class="lantern lantern-r">🏮</div>
 
 <div class="container">
     <div class="card">
         
         <div id="p0" class="page active">
-            <span style="font-size: 50px;">🧧</span>
             <h1>宜慶地政</h1>
-            <h2>感恩餐會許願池</h2>
-            <p>感謝夥伴們一整年的努力！<br>我們特別準備了這個互動空間，<br>邀請您來許下今年的心願。</p>
+            <h2>🧧 感恩餐會許願池 🧧</h2>
+            <p>感謝夥伴們一整年的努力！<br>新春將至，福氣滿滿，<br>快來投下您的心願吧！</p>
             <br>
             <button class="btn-main" onclick="showPage('q1')">開始許願</button>
         </div>
@@ -75,9 +92,9 @@
             <button class="btn-opt" onclick="showPage('joke1')">Samsung S26 Ultra</button>
         </div>
         <div id="joke1" class="page">
-            <span class="joke-icon">🙄</span>
-            <div class="joke-text animate__animated animate__shakeX">想得美喔～</div>
-            <button class="btn-opt" onclick="showPage('q2')">好吧...下一題</button>
+            <span class="joke-icon">😅</span>
+            <div class="joke-text animate__animated animate__tada">想得美喔～</div>
+            <button class="btn-next" onclick="showPage('q2')">好吧...下一題</button>
         </div>
 
         <div id="q2" class="page">
@@ -86,9 +103,9 @@
             <button class="btn-opt" onclick="showPage('joke2')">香奈兒 (Chanel)</button>
         </div>
         <div id="joke2" class="page">
-            <span class="joke-icon">😱</span>
-            <div class="joke-text animate__animated animate__shakeX">不可能，別作夢！</div>
-            <button class="btn-opt" onclick="showPage('q3')">我清醒了，下一題</button>
+            <span class="joke-icon">💸</span>
+            <div class="joke-text animate__animated animate__tada">不可能，別作夢！</div>
+            <button class="btn-next" onclick="showPage('q3')">我清醒了，下一題</button>
         </div>
 
         <div id="q3" class="page">
@@ -97,16 +114,16 @@
             <button class="btn-opt" onclick="showPage('joke3')">保時捷 911</button>
         </div>
         <div id="joke3" class="page">
-            <span class="joke-icon">👻</span>
-            <div class="joke-text animate__animated animate__shakeX">去睡覺比較快啦！</div>
-            <button class="btn-opt" onclick="showPage('final')">看真正能抽的...</button>
+            <span class="joke-icon">🏮</span>
+            <div class="joke-text animate__animated animate__tada">去睡覺比較快啦！</div>
+            <button class="btn-next" onclick="showPage('final')">看真正能抽的...</button>
         </div>
 
         <div id="final" class="page">
-            <span class="fountain-anim">⛲</span>
-            <h2 style="margin-top: 0;">宜慶感恩許願池</h2>
-            <p style="opacity: 0.8; margin-bottom: 30px;">好啦！開個小玩笑～<br>雖然前面的大夢很難，<br>但您的真心話我們一定聽！</p>
-            <button class="glow-btn" onclick="finish()">點我正式許願</button>
+            <span style="font-size:60px;">⛲</span>
+            <h1 style="font-size:1.8rem;">感恩許願池</h1>
+            <p style="margin-bottom: 30px;">好啦！開個小玩笑～<br>雖然夢想很大，但心意更重！<br>請留下您最真實的願望：</p>
+            <button class="glow-btn" onclick="finish()">立刻進入許願站</button>
         </div>
 
     </div>
@@ -119,22 +136,14 @@
     }
 
     function finish() {
-        // 撒花特效
-        var duration = 3 * 1000;
-        var animationEnd = Date.now() + duration;
-        var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+        // 金紅色的彩帶特效
+        var end = Date.now() + (2.5 * 1000);
+        (function frame() {
+            confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0, y:0.8 }, colors: ['#ff0000', '#ffd700'] });
+            confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1, y:0.8 }, colors: ['#ff0000', '#ffd700'] });
+            if (Date.now() < end) requestAnimationFrame(frame);
+        }());
 
-        function randomInRange(min, max) { return Math.random() * (max - min) + min; }
-
-        var interval = setInterval(function() {
-            var timeLeft = animationEnd - Date.now();
-            if (timeLeft <= 0) return clearInterval(interval);
-            var particleCount = 50 * (timeLeft / duration);
-            confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
-            confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
-        }, 250);
-
-        // 兩秒後跳轉
         setTimeout(() => {
             window.location.href = "https://forms.gle/JhEsZ4KktNeHyPjV9";
         }, 2000);
