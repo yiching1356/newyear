@@ -3,99 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>宜慶地政感恩餐會 - 許願池</title>
+    <title>宜慶地政感恩餐會 - 趣味許願</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        :root { --gold: #f1c40f; --red: #c0392b; --dark: #2c3e50; }
+        :root { --gold: #f1c40f; --red: #e74c3c; --dark: #1a1a1a; }
         body { 
-            background: linear-gradient(135deg, #1a1a1a 0%, #2c3e50 100%);
-            color: white; 
+            background: var(--dark); color: white; 
             font-family: "Microsoft JhengHei", sans-serif; 
-            margin: 0; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            height: 100vh;
-            overflow: hidden;
+            display: flex; justify-content: center; align-items: center; 
+            min-height: 100vh; margin: 0; overflow: hidden;
         }
         .card { 
-            text-align: center;
-            padding: 40px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            border: 2px solid var(--gold);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(8px);
-            width: 85%;
-            max-width: 450px;
+            text-align: center; padding: 30px; background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px; border: 2px solid var(--gold);
+            width: 90%; max-width: 450px; backdrop-filter: blur(10px);
         }
-        .logo-area { font-size: 50px; margin-bottom: 15px; }
-        h1 { color: var(--gold); font-size: 2rem; margin-bottom: 5px; letter-spacing: 1px; }
-        h2 { font-size: 1.2rem; color: #fff; margin-bottom: 25px; font-weight: normal; opacity: 0.9; }
-        p { color: #ecf0f1; line-height: 1.8; margin-bottom: 35px; font-size: 1rem; }
-        .btn {
-            background: linear-gradient(45deg, #e74c3c, #f39c12);
-            color: white;
-            border: none;
-            padding: 15px 45px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            border-radius: 10px;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            transition: all 0.3s ease;
+        .step { display: none; animation: fadeIn 0.5s; }
+        .active { display: block; }
+        h2 { color: var(--gold); margin-bottom: 20px; }
+        .options { display: grid; gap: 10px; }
+        .btn-opt { 
+            background: transparent; border: 1px solid white; color: white;
+            padding: 12px; border-radius: 10px; cursor: pointer; transition: 0.3s;
         }
-        .btn:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 8px 25px rgba(241, 196, 15, 0.4);
+        .btn-opt:hover { background: rgba(255,255,255,0.2); }
+        .feedback { color: #ff7675; font-weight: bold; margin-top: 15px; min-height: 24px; }
+        .btn-next { 
+            background: var(--gold); color: black; border: none; padding: 10px 20px;
+            border-radius: 5px; cursor: pointer; margin-top: 20px; display: none; font-weight: bold;
         }
-        .footer { margin-top: 30px; font-size: 0.8rem; color: var(--gold); opacity: 0.7; }
+        .final-btn {
+            background: linear-gradient(45deg, var(--red), #f39c12);
+            color: white; border: none; padding: 20px 40px; font-size: 1.2rem;
+            border-radius: 50px; cursor: pointer; box-shadow: 0 0 20px var(--red);
+        }
+        @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <div class="logo-area">🏆</div>
-    <h1>宜慶地政</h1>
-    <h2>感恩餐會 ‧ 許願預熱</h2>
-    <p>感謝夥伴們一整年的辛勞！<br>現在就寫下您心儀的獎項，<br>讓我們一起期待驚喜降臨。</p>
-    
-    <button class="btn" onclick="startCelebrate()">填寫願望清單</button>
-    
-    <div class="footer">攜手同心 ‧ 共創佳績</div>
+    <div id="step1" class="step active">
+        <h2>Q1: 今年最想抽到哪款手機？</h2>
+        <div class="options">
+            <button class="btn-opt" onclick="showJoke(1, '想得美喔～')">iPhone 17 Pro Max</button>
+            <button class="btn-opt" onclick="showJoke(1, '不可能，別作夢！')">Samsung S26 Ultra</button>
+        </div>
+        <p id="joke1" class="feedback"></p>
+        <button id="next1" class="btn-next" onclick="nextStep(2)">下一題 (已死心)</button>
+    </div>
+
+    <div id="step2" class="step">
+        <h2>Q2: 犒賞辛苦的自己，想要...</h2>
+        <div class="options">
+            <button class="btn-opt" onclick="showJoke(2, '這預算...不可能！')">愛馬仕 (Hermès)</button>
+            <button class="btn-opt" onclick="showJoke(2, '老闆聽了會流淚...')">香奈兒 (Chanel)</button>
+        </div>
+        <p id="joke2" class="feedback"></p>
+        <button id="next2" class="btn-next" onclick="nextStep(3)">下一題 (我不強求了)</button>
+    </div>
+
+    <div id="step3" class="step">
+        <h2>Q3: 如果宜慶發大財，你想要？</h2>
+        <div class="options">
+            <button class="btn-opt" onclick="showJoke(3, '想得美，去睡覺比較快')">市中心透天別墅</button>
+            <button class="btn-opt" onclick="showJoke(3, '不可能！你當我是神燈精靈？')">保時捷 911</button>
+        </div>
+        <p id="joke3" class="feedback"></p>
+        <button id="next3" class="btn-next" onclick="nextStep(4)">看最終結果</button>
+    </div>
+
+    <div id="step4" class="step">
+        <h1 style="color:var(--gold)">好啦，開個玩笑！</h1>
+        <p>雖然上面的可能沒有...<br>但您的真心話，老闆願意聽！</p>
+        <br>
+        <button class="final-btn" onclick="goToForm()">進入真正的許願池</button>
+        <p style="margin-top:20px; font-size:0.8rem; opacity:0.6;">宜慶地政感恩餐會 祝您中大獎</p>
+    </div>
 </div>
 
 <script>
-    function startCelebrate() {
-        // 發射彩帶
-        var end = Date.now() + (2.5 * 1000);
-        var colors = ['#f1c40f', '#e74c3c', '#ffffff', '#3498db'];
+    function showJoke(step, text) {
+        document.getElementById('joke' + step).innerText = text;
+        document.getElementById('next' + step).style.display = 'inline-block';
+    }
 
-        (function frame() {
-            confetti({
-                particleCount: 6,
-                angle: 60,
-                spread: 55,
-                origin: { x: 0, y: 0.8 },
-                colors: colors
-            });
-            confetti({
-                particleCount: 6,
-                angle: 120,
-                spread: 55,
-                origin: { x: 1, y: 0.8 },
-                colors: colors
-            });
+    function nextStep(step) {
+        document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+        document.getElementById('step' + step).classList.add('active');
+    }
 
-            if (Date.now() < end) {
-                requestAnimationFrame(frame);
-            }
-        }());
-
-        // 1.8 秒後跳轉至 Google 表單
+    function goToForm() {
+        confetti({
+            particleCount: 150,
+            spread: 70,
+            origin: { y: 0.6 },
+            colors: ['#f1c40f', '#e74c3c']
+        });
         setTimeout(function() {
-            window.location.href = "https://forms.gle/t5HZDzJ5snn6r5Q77"; 
-        }, 1800);
+            window.location.href = "https://forms.gle/JhEsZ4KktNeHyPjV9";
+        }, 1500);
     }
 </script>
 
